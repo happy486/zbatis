@@ -1,4 +1,4 @@
-package com.raycloud.util.daogen;
+package com.trilemon.zbatis.generator;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -8,9 +8,10 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import com.trilemon.zbatis.generator.utils.StringUtils;
 import org.apache.log4j.Logger;
 
-import com.raycloud.util.daogen.util.StringUtil;
+import com.trilemon.zbatis.generator.utils.StringUtils;
 
 public class DbConn {
 	/** 日志记录 */
@@ -218,11 +219,11 @@ public class DbConn {
 			logger.info("===============================数据库支持的数据类型:");
 			while (rs.next()) {
 				logger.info("类型名称【"
-						+ StringUtil.genLengthStr(rs.getString(1), 20)
+						+ StringUtils.genLengthStr(rs.getString(1), 20)
 						+ "】SqlType【"
-						+ StringUtil.genLengthStr(rs.getString(2), 5)
+						+ StringUtils.genLengthStr(rs.getString(2), 5)
 						+ "】最大精度【"
-						+ StringUtil.genLengthStr(rs.getString(3), 10) + "】");
+						+ StringUtils.genLengthStr(rs.getString(3), 10) + "】");
 			}
 			/* 获取数据库信息 */
 			String dbType = dbmd.getDatabaseProductName(); // 获取当前数据库是什么数据库。如mysql等。返回的是字符串。

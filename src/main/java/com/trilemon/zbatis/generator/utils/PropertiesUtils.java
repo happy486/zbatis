@@ -1,4 +1,4 @@
-package com.raycloud.util.daogen.util;
+package com.trilemon.zbatis.generator.utils;
 
 import java.io.InputStream;
 import java.util.Enumeration;
@@ -8,9 +8,9 @@ import java.util.ResourceBundle;
 
 import org.apache.log4j.Logger;
 
-public class PropertiesUtil {
+public class PropertiesUtils {
 	/** 日志记录 */
-	private static Logger logger = Logger.getLogger(PropertiesUtil.class);
+	private static Logger logger = Logger.getLogger(PropertiesUtils.class);
 
 	/**
 	 * 通过java.util.ResourceBundle获取属性,
@@ -73,15 +73,15 @@ public class PropertiesUtil {
 	public static void main(String[] args){
 		//测试根据ResourceBundle获取Properties
 		long s = System.currentTimeMillis();
-		Properties p = PropertiesUtil.getPropertiesByResourceBundle("dao/db");
+		Properties p = PropertiesUtils.getPropertiesByResourceBundle("dao/db");
 		System.out.println(p);
 		System.out.println("atime:"+(System.currentTimeMillis()-s));
 		//测试根据Properties.load获取Properties
 		s = System.currentTimeMillis();
-		Properties p2 = PropertiesUtil.getPropertiesByFilename("dao/db.properties");
+		Properties p2 = PropertiesUtils.getPropertiesByFilename("dao/db.properties");
 		System.out.println(p2);
 		System.out.println("btime:"+(System.currentTimeMillis()-s));
 		//测试获取单个属性
-		System.out.println(PropertiesUtil.getProperty("dao/db.properties","DB_TYPE"));
+		System.out.println(PropertiesUtils.getProperty("dao/db.properties", "DB_TYPE"));
 	}
 }

@@ -1,12 +1,13 @@
-package com.raycloud.util.daogen;
+package com.trilemon.zbatis.generator;
 
-import com.raycloud.util.daogen.util.FileUtil;
-import com.raycloud.util.daogen.util.StringUtil;
-import com.raycloud.util.daogen.util.VelocityTemplate;
+import com.trilemon.zbatis.generator.utils.FileUtils;
+import com.trilemon.zbatis.generator.utils.FileUtils;
+import com.trilemon.zbatis.generator.utils.StringUtils;
+import com.trilemon.zbatis.generator.utils.StringUtils;
+import com.trilemon.zbatis.generator.utils.VelocityTemplate;
 import java.util.*;
 import java.util.Map.Entry;
-import net.letuu.daogen.GlobalBean;
-import org.apache.commons.lang.StringUtils;
+import com.trilemon.zbatis.generator.GlobalBean;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.log4j.Logger;
 import org.apache.velocity.VelocityContext;
@@ -133,8 +134,8 @@ public class Gen {
         String tabName;
         List<String> tableList = gen.genTable.getTableName();
         // 创建系统目录结构
-        FileUtil.copyDirectiory(SOURCE_IN_PATH + settings.getTmplPath(), settings.getGenPath() + settings.getTmplPath());
-        FileUtil.delExtFile(settings.getGenPath() + settings.getTmplPath(), ".vm"); // 删除拷贝过去的VM文件
+        FileUtils.copyDirectiory(SOURCE_IN_PATH + settings.getTmplPath(), settings.getGenPath() + settings.getTmplPath());
+        FileUtils.delExtFile(settings.getGenPath() + settings.getTmplPath(), ".vm"); // 删除拷贝过去的VM文件
         // 循环生成所有表数据访问代码，返回类对象并设置类对象列表
         logger.info("共有" + tableList.size() + "个表需要生成数据访问层.");
         List<TableBean> tbList = new ArrayList<TableBean>();
@@ -183,12 +184,12 @@ public class Gen {
         ctx.put("tbb", tableBean); // 设置表对象
         ctx.put("gb", globalBean); // 设置全局信息
         ctx.put("sysInit", settings); // 设置系统信息
-        ctx.put("stringUtil", new StringUtil()); // 设置StringUtil
+        ctx.put("stringUtil", new StringUtils()); // 设置StringUtil
         try {
             // 生成Java代码
             String javaVmDir = SOURCE_IN_PATH + settings.getTmplPath() + PATH_JAVA;
             String javaDir = settings.getGenPath() + settings.getTmplPath() + PATH_JAVA;
-            List<String> javaVmList = FileUtil.getFileListWithExt(javaVmDir, ".vm");
+            List<String> javaVmList = FileUtils.getFileListWithExt(javaVmDir, ".vm");
             String createFilename, packageDir = "", packageStr;
             for (String vmFilename : javaVmList) {
                 if (vmFilename.startsWith("Base"))
@@ -197,18 +198,18 @@ public class Gen {
                     this.doSpecialVM(ctx, vmFilename, javaVmDir, javaDir);
                     continue;
                 }
-                createFilename = FileUtil.getFilenameWithoutExt(vmFilename);
+                createFilename = FileUtils.getFilenameWithoutExt(vmFilename);
                 if (createFilename.startsWith("DO.")) {
                     createFilename = createFilename.replace("DO", "");
                 }
-                packageStr = FileUtil.findLine(javaVmDir + "/" + vmFilename, "package");
-                if (StringUtils.isNotBlank(packageStr)) {
+                packageStr = FileUtils.findLine(javaVmDir + "/" + vmFilename, "package");
+                if (org.apache.commons.lang.StringUtils.isNotBlank(packageStr)) {
                     packageStr = packageStr
                             .substring(packageStr.indexOf("$!{gb.packageName}"), packageStr.indexOf(";"));
                     packageDir = packageStr.replace("$!{gb.packageName}", globalBean.getPackageName())
                             .replace(".", "/");
                 }
-                FileUtil.mkDirs(javaDir + packageDir);
+                FileUtils.mkDirs(javaDir + packageDir);
                 VelocityTemplate.mergeTemplate(settings.getTmplPath() + PATH_JAVA + "/" + vmFilename, javaDir
                         + packageDir + "/" + tableBean.getClassName() + createFilename, ctx);
                 logger.info(tableBean.getClassName() + createFilename);
@@ -225,13 +226,13 @@ public class Gen {
 
     private void doSpecialVM(VelocityContext ctx, String vmFilename, String javaVmDir, String javaDir) {
         String packageDir = "";
-        String createFilename = FileUtil.getFilenameWithoutExt(vmFilename);
-        String packageStr = FileUtil.findLine(javaVmDir + "/" + vmFilename, "package");
-        if (StringUtils.isNotBlank(packageStr)) {
+        String createFilename = FileUtils.getFilenameWithoutExt(vmFilename);
+        String packageStr = FileUtils.findLine(javaVmDir + "/" + vmFilename, "package");
+        if (org.apache.commons.lang.StringUtils.isNotBlank(packageStr)) {
             packageStr = packageStr.substring(packageStr.indexOf("$!{gb.packageName}"), packageStr.indexOf(";"));
             packageDir = packageStr.replace("$!{gb.packageName}", globalBean.getPackageName()).replace(".", "/");
         }
-        FileUtil.mkDirs(javaDir + packageDir);
+        FileUtils.mkDirs(javaDir + packageDir);
         VelocityTemplate.mergeTemplate(settings.getTmplPath() + PATH_JAVA + "/" + vmFilename, javaDir + packageDir
                 + "/" + createFilename, ctx);
     }
@@ -246,26 +247,26 @@ public class Gen {
         ctxCfg.put("tbbList", tbList);
         ctxCfg.put("gb", globalBean); // 设置全局信息
         ctxCfg.put("sysInit", settings); // 设置系统信息
-        ctxCfg.put("stringUtil", new StringUtil()); // 设置StringUtil
+        ctxCfg.put("stringUtil", new StringUtils()); // 设置StringUtil
 
         try {
             // 生成Java基类代码
             String javaVmDir = SOURCE_IN_PATH + settings.getTmplPath() + PATH_JAVA;
             String javaDir = settings.getGenPath() + settings.getTmplPath() + PATH_JAVA;
-            List<String> javaVmList = FileUtil.getFileListWithExt(javaVmDir, ".vm");
+            List<String> javaVmList = FileUtils.getFileListWithExt(javaVmDir, ".vm");
             String createFilename, packageDir = "", packageStr;
             for (String vmFilename : javaVmList) {
                 if (!vmFilename.startsWith("Base"))
                     continue; // 非基类代码跳过
-                createFilename = FileUtil.getFilenameWithoutExt(vmFilename);
-                packageStr = FileUtil.findLine(javaVmDir + "/" + vmFilename, "package");
-                if (StringUtils.isNotBlank(packageStr)) {
+                createFilename = FileUtils.getFilenameWithoutExt(vmFilename);
+                packageStr = FileUtils.findLine(javaVmDir + "/" + vmFilename, "package");
+                if (org.apache.commons.lang.StringUtils.isNotBlank(packageStr)) {
                     packageStr = packageStr
                             .substring(packageStr.indexOf("$!{gb.packageName}"), packageStr.indexOf(";"));
                     packageDir = packageStr.replace("$!{gb.packageName}", globalBean.getPackageName())
                             .replace(".", "/");
                 }
-                FileUtil.mkDirs(javaDir + packageDir);
+                FileUtils.mkDirs(javaDir + packageDir);
                 VelocityTemplate.mergeTemplate(settings.getTmplPath() + PATH_JAVA + "/" + vmFilename, javaDir
                         + packageDir + "/" + createFilename, ctxCfg);
             }

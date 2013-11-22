@@ -1,4 +1,4 @@
-package com.raycloud.util.daogen.util;
+package com.trilemon.zbatis.generator.utils;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;

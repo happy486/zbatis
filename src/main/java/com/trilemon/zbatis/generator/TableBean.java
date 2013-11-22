@@ -1,11 +1,12 @@
-package com.raycloud.util.daogen;
+package com.trilemon.zbatis.generator;
+
+import com.trilemon.zbatis.generator.utils.CharUtils;
+import com.trilemon.zbatis.generator.utils.CharUtils;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.raycloud.util.daogen.util.CharUtil;
 
 public class TableBean {
     /** ================表结构信息====================== */
@@ -44,7 +45,7 @@ public class TableBean {
 	private String objectName;
 
 	/** 主键 */
-	private List<ColBean> pkcol = new ArrayList<ColBean>();
+	private List<ColBean> pkCol = new ArrayList<ColBean>();
 	/** 字段列表 */
 	private List<ColBean> colList = new ArrayList<ColBean>();
 
@@ -92,12 +93,12 @@ public class TableBean {
 		return this;
 	}
 
-	public List<ColBean> getPkcol() {
-		return pkcol;
+	public List<ColBean> getPkCol() {
+		return pkCol;
 	}
 
-	public TableBean addPkcol(ColBean _pkcol) {
-        this.pkcol.add(_pkcol);
+	public TableBean addPkCol(ColBean _pkCol) {
+        this.pkCol.add(_pkCol);
 		return this;
 	}
 
@@ -113,21 +114,21 @@ public class TableBean {
 	/**
 	 * 根据表名生成对象类名,例如：account_audit -> AcountAudit
 	 * 
-	 * @param tablename
+	 * @param tableName
 	 * @return
 	 */
-	public static String getClassName(String tablename) {
-		if ("".equals(tablename) || tablename == null)
+	public static String getClassName(String tableName) {
+		if ("".equals(tableName) || tableName == null)
 			return "";
-		char[] a = tablename.toLowerCase().toCharArray();
+		char[] a = tableName.toLowerCase().toCharArray();
 		StringBuffer sb = new StringBuffer();
 		// 首字母转大写
-		sb.append(CharUtil.toUpperCase(a[0]));
+		sb.append(CharUtils.toUpperCase(a[0]));
 		// 下划线首字母转大写
 		for (int i = 1; i < a.length; i++) {
 			char c = a[i];
 			if (c == '_' && i < a.length - 1) {
-				a[i + 1] = CharUtil.toUpperCase(a[i + 1]);
+				a[i + 1] = CharUtils.toUpperCase(a[i + 1]);
 			} else {
 				sb.append(c);
 			}
@@ -143,14 +144,14 @@ public class TableBean {
 	 */
 	public static String getObjectName(String classname) {
 		char[] a = classname.toCharArray();
-		a[0] = CharUtil.toLowerCase(a[0]);
+		a[0] = CharUtils.toLowerCase(a[0]);
 		return new String(a);
 	}
 
 	@Override
 	public String toString() {
 		return tableName + "\t" + conf + "\t" + className + "\t" + objectName
-				+ "\t" + pkcol + "\t" + colList + "\t" + colMap;
+				+ "\t" + pkCol + "\t" + colList + "\t" + colMap;
 	}
 
 

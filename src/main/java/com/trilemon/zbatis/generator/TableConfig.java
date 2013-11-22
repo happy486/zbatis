@@ -1,4 +1,4 @@
-package com.raycloud.util.daogen;
+package com.trilemon.zbatis.generator;
 
 import java.util.ArrayList;
 import java.util.HashMap;

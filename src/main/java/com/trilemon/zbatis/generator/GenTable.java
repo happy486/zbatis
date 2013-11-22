@@ -1,4 +1,4 @@
-package com.raycloud.util.daogen;
+package com.trilemon.zbatis.generator;
 
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
@@ -9,10 +9,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
+import com.trilemon.zbatis.generator.utils.StringUtils;
 import org.apache.log4j.Logger;
 
-import com.raycloud.util.daogen.util.StringUtil;
+import com.trilemon.zbatis.generator.utils.StringUtils;
 
 public class GenTable {
 	
@@ -47,7 +47,7 @@ public class GenTable {
 	public TableBean prepareTableBean(String tableName, TableConfig conf) {
         if (conf == null) conf = TableConfig.DEFAULT;
 		//验证及转换表名
-		if(StringUtils.isBlank(tableName)) return null;
+		if(org.apache.commons.lang.StringUtils.isBlank(tableName)) return null;
 		tableName = tableName.toLowerCase();
 		logger.info("开始生成表对象，表名：" + tableName);
 		if(!allTableName.contains(tableName)){
@@ -69,12 +69,12 @@ public class GenTable {
 	
 	private boolean checkTableBean(TableBean tableBean){
 		// 校验主键是否为空
-//		if (tableBean.getPkcol() == null) {
+//		if (tableBean.getPkCol() == null) {
 //			logger.error("表["+tableBean.getTableName()+"]自增主键不存在,不生成此表DAO层代码！");
 //			return false;
 //		}
 		// 校验主键是否命名为id,？为啥一定要设置为id？
-//		if (!"id".equals(tableBean.getPkcol().getColName())) {
+//		if (!"id".equals(tableBean.getPkCol().getColName())) {
 //			logger.error("表["+tableBean.getTableName()+"]主键命名不是id,不生成此表DAO层代码！");
 //			return false;
 //		}
@@ -100,13 +100,13 @@ public class GenTable {
 	 */
 	private TableBean convertTableBean(TableBean tableBean) {
 		// 设置表对象主键名为id(按源自段设置）
-		if (tableBean.getPkcol() != null) {
-			List<ColBean> cbs = tableBean.getPkcol();
+		if (tableBean.getPkCol() != null) {
+			List<ColBean> cbs = tableBean.getPkCol();
             for (ColBean cb : cbs) {
                 cb.setPropertyName(ColBean.getPropName(cb.getColName()));
 //			cb.setPropertyName("id");
                 cb.setMethodName(ColBean.getMethodName(cb.getPropertyName()));
-                cb.setPropertyType(SqlType2Feild.mapJavaType(cb.getColSQLType()));
+                cb.setPropertyType(SqlType2Field.mapJavaType(cb.getColSQLType()));
 //			cb.setHibernateType(FieldMapping.mapHibernateType(cb.getColSQLType()));
             }
 		}
@@ -116,11 +116,11 @@ public class GenTable {
 			ColBean cb = it.next();
 			cb.setPropertyName(ColBean.getPropName(cb.getColName()));
 			cb.setMethodName(ColBean.getMethodName(cb.getPropertyName()));
-			cb.setPropertyType(SqlType2Feild.mapJavaType(cb.getColSQLType()));
+			cb.setPropertyType(SqlType2Field.mapJavaType(cb.getColSQLType()));
 		}
 		// 将主键加入字段列表
-		if (tableBean.getPkcol().size() > 0) {
-            for (ColBean bean : tableBean.getPkcol()) {
+		if (tableBean.getPkCol().size() > 0) {
+            for (ColBean bean : tableBean.getPkCol()) {
                 if(!tableBean.getColMap().containsKey(bean.getColName())){
                     tableBean.getColMap().put(bean.getColName(), bean);
                     ll.add(0, bean);
@@ -149,10 +149,10 @@ public class GenTable {
 			logger.info("============================获取所有表结构信息：");
 			while (rs.next()) {
 				tableList.add(rs.getString(3).trim());
-				logger.info("Schema名【" + StringUtil.genLengthStr(rs.getString(1),10)
-						+"】表名【"+ StringUtil.genLengthStr(rs.getString(3),25)
-						+"】表类型【"+ StringUtil.genLengthStr(rs.getString(4),10)
-						+"】表注释【"+ StringUtil.genLengthStr(rs.getString(5),30)+"】");	//Mysql无法通过此方式获取表注释
+				logger.info("Schema名【" + StringUtils.genLengthStr(rs.getString(1), 10)
+						+"】表名【"+ StringUtils.genLengthStr(rs.getString(3), 25)
+						+"】表类型【"+ StringUtils.genLengthStr(rs.getString(4), 10)
+						+"】表注释【"+ StringUtils.genLengthStr(rs.getString(5), 30)+"】");	//Mysql无法通过此方式获取表注释
 			}
 		} catch (SQLException e) {
 			logger.error("获取所有指定表的元信息出错", e);
@@ -190,11 +190,11 @@ public class GenTable {
                 List<String> list = new ArrayList<String>();
                 while (rs.next()) {
                     list.add( rs.getString(4).toLowerCase());
-					logger.info("Schema名【" + StringUtil.genLengthStr(rs.getString(1),10)
-							+"】表名【"+ StringUtil.genLengthStr(rs.getString(3),25)
-							+"】主键列名【"+ StringUtil.genLengthStr(rs.getString(4),10)
-							+"】主键列序号【"+ StringUtil.genLengthStr(rs.getString(5),2)
-							+"】主键名称【"+ StringUtil.genLengthStr(rs.getString(6),15)+"】");
+					logger.info("Schema名【" + StringUtils.genLengthStr(rs.getString(1), 10)
+							+"】表名【"+ StringUtils.genLengthStr(rs.getString(3), 25)
+							+"】主键列名【"+ StringUtils.genLengthStr(rs.getString(4), 10)
+							+"】主键列序号【"+ StringUtils.genLengthStr(rs.getString(5), 2)
+							+"】主键名称【"+ StringUtils.genLengthStr(rs.getString(6), 15)+"】");
 				}
                 map.put(t.toLowerCase(), list);
 			}
@@ -217,23 +217,23 @@ public class GenTable {
 			 * 返回23列数据,如下所示*/
 			rs = dbmd.getColumns(null, null, tableBean.getTableName(), "%");
 			while (rs.next()) {
-				logger.info("表名【" + StringUtil.genLengthStr(rs.getString(3),25)
-						+"】列名【"+ StringUtil.genLengthStr(rs.getString(4),15)
-						+"】列sqltype【"+ StringUtil.genLengthStr(rs.getInt(5),3)
-						+"】列typename【"+ StringUtil.genLengthStr(rs.getString(6),10)
-						+"】列precision【"+ StringUtil.genLengthStr(rs.getInt(7),5)
-						+"】列scale【"+ StringUtil.genLengthStr(rs.getInt(9),5)
-						+"】列isNullable【"+ StringUtil.genLengthStr(rs.getInt(11),2)
-						+"】列isNullable2【"+ StringUtil.genLengthStr(rs.getString(18),3)
-						+"】列comment【"+ StringUtil.genLengthStr(rs.getString(12),20)
-						+"】列defaultValue【"+ StringUtil.genLengthStr(rs.getString(13),5)
-						+"】列isAutocrement【"+ StringUtil.genLengthStr(rs.getString(23),5)+"】");
+				logger.info("表名【" + StringUtils.genLengthStr(rs.getString(3), 25)
+						+"】列名【"+ StringUtils.genLengthStr(rs.getString(4), 15)
+						+"】列sqltype【"+ StringUtils.genLengthStr(rs.getInt(5), 3)
+						+"】列typename【"+ StringUtils.genLengthStr(rs.getString(6), 10)
+						+"】列precision【"+ StringUtils.genLengthStr(rs.getInt(7), 5)
+						+"】列scale【"+ StringUtils.genLengthStr(rs.getInt(9), 5)
+						+"】列isNullable【"+ StringUtils.genLengthStr(rs.getInt(11), 2)
+						+"】列isNullable2【"+ StringUtils.genLengthStr(rs.getString(18), 3)
+						+"】列comment【"+ StringUtils.genLengthStr(rs.getString(12), 20)
+						+"】列defaultValue【"+ StringUtils.genLengthStr(rs.getString(13), 5)
+						+"】列isAutocrement【"+ StringUtils.genLengthStr(rs.getString(23), 5)+"】");
 				ColBean cb = new ColBean();
 				String colName = rs.getString(4);
                 /**去掉列名小写cb.setColName(colName.toLowerCase());**/
                 cb.setColName(colName);
 				cb.setColType(rs.getString(6));	//列类型
-				cb.setColComment(StringUtils.isBlank(rs.getString(12))?cb.getColName():rs.getString(12));	//列注释
+				cb.setColComment(org.apache.commons.lang.StringUtils.isBlank(rs.getString(12))?cb.getColName():rs.getString(12));	//列注释
 				cb.setNullable(rs.getInt(11)==0?false:true);	//是否可为空
 				cb.setDefaultValue(rs.getString(13));
 				cb.setPrecision(rs.getInt(7));	//字段长度	
@@ -250,7 +250,7 @@ public class GenTable {
                 for (String pkfieldname : pkfieldnames) {
                     if (colName.equalsIgnoreCase(pkfieldname)) {
                         cb.setPK(true);
-                        tableBean.addPkcol(cb);
+                        tableBean.addPkCol(cb);
                         break;
                     } else {
                         cb.setPK(false);

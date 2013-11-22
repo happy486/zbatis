@@ -1,6 +1,6 @@
-package com.raycloud.util.daogen.util;
+package com.trilemon.zbatis.generator.utils;
 
-public class CharUtil {
+public class CharUtils {
 	/**
 	 * 将字符转换成大写，如a->A
 	 * @param c
@@ -29,13 +29,13 @@ public class CharUtil {
 		String upperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		char[] u = upperCase.toCharArray();
 		for(int i=0;i<u.length;i++){
-			System.out.print(CharUtil.toLowerCase(u[i])+"("+(int)u[i]+")");
+			System.out.print(CharUtils.toLowerCase(u[i])+"("+(int)u[i]+")");
 		}
 		System.out.println();
 		String lowerCase = "abcdefghijklmnopqrstuvwxyz";
 		char[] l = lowerCase.toCharArray();
 		for(int i=0;i<l.length;i++){
-			System.out.print(CharUtil.toUpperCase(l[i])+"("+(int)l[i]+")");
+			System.out.print(CharUtils.toUpperCase(l[i])+"("+(int)l[i]+")");
 		}
 	}
 }

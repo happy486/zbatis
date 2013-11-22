@@ -1,4 +1,4 @@
-package com.raycloud.util.daogen.util;
+package com.trilemon.zbatis.generator.utils;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -16,9 +16,9 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
-public class FileUtil {
+public class FileUtils {
 	/** 日志记录 */
-	private final static Logger logger = Logger.getLogger(FileUtil.class);
+	private final static Logger logger = Logger.getLogger(FileUtils.class);
 	
 	/**
 	 * 根据指定路径获取所有文件夹列表(不包括文件,或隐藏文件夹)
@@ -275,7 +275,7 @@ public class FileUtil {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		String packageStr = FileUtil.findLine(ClassLoader.getSystemResource("dao/taobaodao/src/main/java/DAO.java.vm").getPath(), "package");
+		String packageStr = FileUtils.findLine(ClassLoader.getSystemResource("dao/taobaodao/src/main/java/DAO.java.vm").getPath(), "package");
 		System.out.println(packageStr);
 		packageStr = packageStr.substring(packageStr.indexOf("$!{gb.packageName}"),packageStr.indexOf(";"));
 		System.out.println(packageStr.replace("$!{gb.packageName}", "com.taobao.trip").replace(".", "/"));

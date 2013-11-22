@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.raycloud.util.daogen;
+package com.trilemon.zbatis.generator;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -10,11 +10,13 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Map.Entry;
 
+import com.trilemon.zbatis.generator.utils.FileUtils;
+import com.trilemon.zbatis.generator.utils.PropertiesUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
-import com.raycloud.util.daogen.util.FileUtil;
-import com.raycloud.util.daogen.util.PropertiesUtil;
+import com.trilemon.zbatis.generator.utils.FileUtils;
+import com.trilemon.zbatis.generator.utils.PropertiesUtils;
 
 /**
  * @author microboss
@@ -67,7 +69,7 @@ public class Settings {
 		String path = ClassLoader.getSystemResource(daopath).getPath();
 		logger.info("开始初始化数据库环境,路径为【" + path + "】");
 		//加载DB属性文件
-		List<String> files = FileUtil.getFileListWithExt(path, ".properties");
+		List<String> files = FileUtils.getFileListWithExt(path, ".properties");
 		String propertiesFilename = null;
 		if(files!=null&&files.size()==1){
 			propertiesFilename = files.get(0);
@@ -78,7 +80,7 @@ public class Settings {
 			return false;
 		}
 		//解析属性文件
-		Properties prop = PropertiesUtil.getPropertiesByResourceBundle(daopath + FileUtil.getFilenameWithoutExt(propertiesFilename));
+		Properties prop = PropertiesUtils.getPropertiesByResourceBundle(daopath + FileUtils.getFilenameWithoutExt(propertiesFilename));
 		if (prop == null) {
 			logger.error("OUT---[false]属性配置文件内容解析为空！");
 			return false;

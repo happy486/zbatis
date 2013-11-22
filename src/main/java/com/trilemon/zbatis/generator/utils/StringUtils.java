@@ -1,6 +1,6 @@
-package com.raycloud.util.daogen.util;
+package com.trilemon.zbatis.generator.utils;
 
-public class StringUtil {
+public class StringUtils {
 	
 	public static String toUpperCase(String str){
 		return str==null?"":str.toUpperCase();

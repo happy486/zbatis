@@ -1,4 +1,4 @@
-package net.letuu.daogen;
+package com.trilemon.zbatis.generator;
 
 import java.util.List;
 

@@ -1,7 +1,8 @@
-package com.raycloud.util.daogen;
+package com.trilemon.zbatis.generator;
 
 
-import com.raycloud.util.daogen.util.CharUtil;
+import com.trilemon.zbatis.generator.utils.CharUtils;
+import com.trilemon.zbatis.generator.utils.CharUtils;
 
 public class ColBean {
 	/**================字段结构信息======================*/
@@ -162,7 +163,7 @@ public class ColBean {
 		for(int i=0;i<cs.length;i++){
 			if(cs[i]!='_'){
 				if(nextUp){
-					sb.append(CharUtil.toUpperCase(cs[i]));
+					sb.append(CharUtils.toUpperCase(cs[i]));
 					nextUp = false;
 				}else{
 					sb.append(cs[i]);
@@ -182,7 +183,7 @@ public class ColBean {
 	 */
 	public static String getMethodName(String propname) {
 		char[] a = propname.toCharArray();
-		a[0] = CharUtil.toUpperCase(a[0]);
+		a[0] = CharUtils.toUpperCase(a[0]);
 		return new String(a);
 	}
 
