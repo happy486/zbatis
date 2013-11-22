@@ -1,7 +1,6 @@
 package com.trilemon.zbatis.generator;
 
 import com.trilemon.zbatis.generator.utils.CharUtils;
-import com.trilemon.zbatis.generator.utils.CharUtils;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -10,9 +9,13 @@ import java.util.Map;
 
 public class TableBean {
     /** ================表结构信息====================== */
-    /** 表名 */
+    /**
+     * 表名
+     */
     private String tableName;
-    /** 不带表分区的表名 */
+    /**
+     * 不带表分区的表名
+     */
     private String pureTableName;
     private String modelName;
 
@@ -29,130 +32,138 @@ public class TableBean {
 
     public TableBean(String tableName, TableConfig conf) {
         this.conf = conf;
-		this.tableName = tableName;
+        this.tableName = tableName;
         if (this.conf.getTablePrefix() != null && !this.conf.getTablePrefix().equals("")) {
             this.className = getClassName(this.tableName.replace(this.conf.getTablePrefix(), ""));
         } else {
             this.className = getClassName(this.tableName);
         }
-		this.objectName = getObjectName(this.className);
-	}
+        this.objectName = getObjectName(this.className);
+    }
 
-	/** ================根据表结构生成表对象及字段信息====================== */
-	/** 类名 */
-	private String className;
-	/** 类对象名 */
-	private String objectName;
+    /** ================根据表结构生成表对象及字段信息====================== */
+    /**
+     * 类名
+     */
+    private String className;
+    /**
+     * 类对象名
+     */
+    private String objectName;
 
-	/** 主键 */
-	private List<ColBean> pkCol = new ArrayList<ColBean>();
-	/** 字段列表 */
-	private List<ColBean> colList = new ArrayList<ColBean>();
+    /**
+     * 主键
+     */
+    private List<ColBean> pkCol = new ArrayList<ColBean>();
+    /**
+     * 字段列表
+     */
+    private List<ColBean> colList = new ArrayList<ColBean>();
 
-	private Map<String, ColBean> colMap = new LinkedHashMap<String, ColBean>();
+    private Map<String, ColBean> colMap = new LinkedHashMap<String, ColBean>();
 
-	public List<ColBean> getColList() {
-		return colList;
-	}
+    public List<ColBean> getColList() {
+        return colList;
+    }
 
-	public TableBean setColList(List<ColBean> colList) {
-		this.colList = colList;
-		for (ColBean cb : this.colList) {
-			this.colMap.put(cb.getColName(), cb);
-		}
-		return this;
-	}
+    public TableBean setColList(List<ColBean> colList) {
+        this.colList = colList;
+        for (ColBean cb : this.colList) {
+            this.colMap.put(cb.getColName(), cb);
+        }
+        return this;
+    }
 
-	public Map<String, ColBean> getColMap() {
-		return this.colMap;
-	}
+    public Map<String, ColBean> getColMap() {
+        return this.colMap;
+    }
 
-	public TableBean addColBean(ColBean bean) {
-        if(!this.colMap.containsKey(bean.getColName())){
+    public TableBean addColBean(ColBean bean) {
+        if (!this.colMap.containsKey(bean.getColName())) {
             this.colMap.put(bean.getColName(), bean);
             this.colList.add(bean);
         }
-		return this;
-	}
+        return this;
+    }
 
-	public String getClassName() {
-		return className;
-	}
+    public String getClassName() {
+        return className;
+    }
 
-	public TableBean setClassName(String className) {
-		this.className = className;
-		return this;
-	}
+    public TableBean setClassName(String className) {
+        this.className = className;
+        return this;
+    }
 
-	public String getObjectName() {
-		return objectName;
-	}
+    public String getObjectName() {
+        return objectName;
+    }
 
-	public TableBean setObjectName(String objectName) {
-		this.objectName = objectName;
-		return this;
-	}
+    public TableBean setObjectName(String objectName) {
+        this.objectName = objectName;
+        return this;
+    }
 
-	public List<ColBean> getPkCol() {
-		return pkCol;
-	}
+    public List<ColBean> getPkCol() {
+        return pkCol;
+    }
 
-	public TableBean addPkCol(ColBean _pkCol) {
+    public TableBean addPkCol(ColBean _pkCol) {
         this.pkCol.add(_pkCol);
-		return this;
-	}
+        return this;
+    }
 
-	public TableConfig getConf() {
-		return conf;
-	}
+    public TableConfig getConf() {
+        return conf;
+    }
 
-	public TableBean setConf(TableConfig conf) {
-		this.conf = conf;
-		return this;
-	}
+    public TableBean setConf(TableConfig conf) {
+        this.conf = conf;
+        return this;
+    }
 
-	/**
-	 * 根据表名生成对象类名,例如：account_audit -> AcountAudit
-	 * 
-	 * @param tableName
-	 * @return
-	 */
-	public static String getClassName(String tableName) {
-		if ("".equals(tableName) || tableName == null)
-			return "";
-		char[] a = tableName.toLowerCase().toCharArray();
-		StringBuffer sb = new StringBuffer();
-		// 首字母转大写
-		sb.append(CharUtils.toUpperCase(a[0]));
-		// 下划线首字母转大写
-		for (int i = 1; i < a.length; i++) {
-			char c = a[i];
-			if (c == '_' && i < a.length - 1) {
-				a[i + 1] = CharUtils.toUpperCase(a[i + 1]);
-			} else {
-				sb.append(c);
-			}
-		}
-		return sb.toString();
-	}
+    /**
+     * 根据表名生成对象类名,例如：account_audit -> AcountAudit
+     *
+     * @param tableName
+     * @return
+     */
+    public static String getClassName(String tableName) {
+        if ("".equals(tableName) || tableName == null)
+            return "";
+        char[] a = tableName.toLowerCase().toCharArray();
+        StringBuffer sb = new StringBuffer();
+        // 首字母转大写
+        sb.append(CharUtils.toUpperCase(a[0]));
+        // 下划线首字母转大写
+        for (int i = 1; i < a.length; i++) {
+            char c = a[i];
+            if (c == '_' && i < a.length - 1) {
+                a[i + 1] = CharUtils.toUpperCase(a[i + 1]);
+            } else {
+                sb.append(c);
+            }
+        }
+        return sb.toString();
+    }
 
-	/**
-	 * 根据类名生成对象名,例如：FullName->fullName
-	 * 
-	 * @param classname
-	 * @return
-	 */
-	public static String getObjectName(String classname) {
-		char[] a = classname.toCharArray();
-		a[0] = CharUtils.toLowerCase(a[0]);
-		return new String(a);
-	}
+    /**
+     * 根据类名生成对象名,例如：FullName->fullName
+     *
+     * @param classname
+     * @return
+     */
+    public static String getObjectName(String classname) {
+        char[] a = classname.toCharArray();
+        a[0] = CharUtils.toLowerCase(a[0]);
+        return new String(a);
+    }
 
-	@Override
-	public String toString() {
-		return tableName + "\t" + conf + "\t" + className + "\t" + objectName
-				+ "\t" + pkCol + "\t" + colList + "\t" + colMap;
-	}
+    @Override
+    public String toString() {
+        return tableName + "\t" + conf + "\t" + className + "\t" + objectName
+                + "\t" + pkCol + "\t" + colList + "\t" + colMap;
+    }
 
 
     public void setModelName(String modelName) {

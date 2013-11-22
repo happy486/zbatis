@@ -7,57 +7,66 @@ import java.util.List;
  */
 public class GlobalBean {
 
-	/** 当前时间，生成类时间用 */
-	private String nowDate;
-	
-	/** 当前用户，生成类用 */
-	private String userName;
-	
-	/** 工程包路径，生成类用 */
-	private String packageName;
-	
-	/** 工程所有表List */
-	private List<String> tableNames;
-	
-	private String objSuffix="";
-	public String getNowDate() {
-		return nowDate;
-	}
+    /**
+     * 当前时间，生成类时间用
+     */
+    private String nowDate;
 
-	public void setNowDate(String nowDate) {
-		this.nowDate = nowDate;
-	}
+    /**
+     * 当前用户，生成类用
+     */
+    private String userName;
 
-	public String getUserName() {
-		return userName;
-	}
+    /**
+     * 工程包路径，生成类用
+     */
+    private String packageName;
 
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
+    /**
+     * 工程所有表List
+     */
+    private List<String> tableNames;
 
-	public String getPackageName() {
-		return packageName;
-	}
+    private String objSuffix = "";
 
-	public void setPackageName(String packageName) {
-		this.packageName = packageName;
-	}
+    public String getNowDate() {
+        return nowDate;
+    }
 
-	public List<String> getTableNames() {
-		return tableNames;
-	}
+    public void setNowDate(String nowDate) {
+        this.nowDate = nowDate;
+    }
 
-	public void setTableNames(List<String> tableNames) {
-		this.tableNames = tableNames;
-	}
+    public String getUserName() {
+        return userName;
+    }
 
-	public String getObjSuffix() {
-		return objSuffix;
-	}
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
-	public void setObjSuffix(String objSuffix) {
-		this.objSuffix = objSuffix;
-	}
-	
+    public String getPackageName() {
+        return packageName;
+    }
+
+    public void setPackageName(String packageName) {
+        this.packageName = packageName;
+    }
+
+    public List<String> getTableNames() {
+        return tableNames;
+    }
+
+    public void setTableNames(List<String> tableNames) {
+        this.tableNames = tableNames;
+    }
+
+    public String getObjSuffix() {
+        return objSuffix;
+    }
+
+    public void setObjSuffix(String objSuffix) {
+        this.objSuffix = objSuffix;
+    }
+
 }

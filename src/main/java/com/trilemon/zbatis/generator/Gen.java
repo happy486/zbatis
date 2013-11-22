@@ -1,16 +1,15 @@
 package com.trilemon.zbatis.generator;
 
+import com.trilemon.commons.DateUtils;
 import com.trilemon.zbatis.generator.utils.FileUtils;
-import com.trilemon.zbatis.generator.utils.FileUtils;
-import com.trilemon.zbatis.generator.utils.StringUtils;
-import com.trilemon.zbatis.generator.utils.StringUtils;
 import com.trilemon.zbatis.generator.utils.VelocityTemplate;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.velocity.VelocityContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.*;
 import java.util.Map.Entry;
-import com.trilemon.zbatis.generator.GlobalBean;
-import org.apache.commons.lang.time.DateFormatUtils;
-import org.apache.log4j.Logger;
-import org.apache.velocity.VelocityContext;
 
 /**
  * 代码生成入口
@@ -19,7 +18,7 @@ public class Gen {
     /**
      * 日志记录
      */
-    private final static Logger logger = Logger.getLogger(Gen.class);
+    private final static Logger logger = LoggerFactory.getLogger(Gen.class);
     // Source目录，从ClassPath中获取
     private final static String SOURCE_IN_PATH = ClassLoader.getSystemResource("").getPath();
 
@@ -127,7 +126,7 @@ public class Gen {
         }
         Gen gen = new Gen(dbConn);
         // 设置工程的全局变量
-        gen.globalBean.setNowDate(DateFormatUtils.format(new Date(), "yyyy-MM-dd"));// 设置系统生成时间
+        gen.globalBean.setNowDate(DateUtils.format(new Date(), "yyyy-MM-dd"));// 设置系统生成时间
         gen.globalBean.setUserName("Ou zhouyou (ouzhouyou@gmail.com)");// 设置系统当前用户
         gen.globalBean.setPackageName(settings.getJavaPackage());// 设置Java_Package路径
         // 生成指定数据库的指定表或所有表数据访问层代码
@@ -247,7 +246,7 @@ public class Gen {
         ctxCfg.put("tbbList", tbList);
         ctxCfg.put("gb", globalBean); // 设置全局信息
         ctxCfg.put("sysInit", settings); // 设置系统信息
-        ctxCfg.put("stringUtil", new StringUtils()); // 设置StringUtil
+        ctxCfg.put("stringUtil", StringUtils.class); // 设置StringUtil
 
         try {
             // 生成Java基类代码
